@@ -32,7 +32,7 @@ class Expect {
 					return (!Expect::call('toEqual', func_get_args()));
 				}, $this->getFailure('toEqual'), $this->getSuccess('toEqual'))
 			->addMethod('toMatch', function($c, $e) {
-					return (preg_match($c, $e));
+					return (preg_match($e, $c));
 				}, '%s matches pattern: %s', '%s does not match pattern: %s')
 			->addMethod('toNotMatch', function($c, $e) {
 					return (!Expect::call('toMatch', func_get_args()));
@@ -95,10 +95,11 @@ class Expect {
 		$result = $this->call($method, $args);
 		$r = ($result) ? 'Test Success: '.$this->getSuccess($method) : 'Test Failure: '.$this->getFailure($method);
 		printf($r, self::toString($args[0]), self::toString($args[1]));
+		print PHP_EOL;
 	}
 
-	public static function toString($a = null) {
-		if ($a === null) return 'NULL';
+	public static function toString($a) {
+		if ($a === NULL) return 'NULL';
 		if (is_string($a)) return $a;
 		return var_export($a, true);
 	}
